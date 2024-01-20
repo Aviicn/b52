@@ -1,11 +1,10 @@
-const express = require("express");
-const path = require("path");
-const { start } = require("repl");
-const app = express();
-const port = 5000;
-const config = require("./src/config/config.json");
-const { Sequelize, QueryTypes } = require("sequelize");
-const sequelize = new Sequelize(config.development);
+const express = require('express')
+const path = require('path')
+const app = express()
+const port = 5000
+const config = require('./src/config/config.json')
+const { Sequelize, QueryTypes} = require('sequelize')
+const sequelize =  new Sequelize(config.development)
 
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "src/views"));
@@ -67,10 +66,10 @@ function addProject(req, res) {
     nodeJs: checkboxes.includes("nodeJs") ? "/assets/img/nodejs.png" : "",
     nextJs: checkboxes.includes("nextJs") ? "/assets/img/nextjs.png" : "",
     reactJs: checkboxes.includes("reactJs") ? "/assets/img/react.png" : "",
-    typeScript: checkboxes.includes("typeScript")
-      ? "/assets/img/typescirpt.png"
-      : "",
-  };
+    typeScript: checkboxes.includes("typeScript")  ? "/assets/img/typescirpt.png" : "",
+};
+     
+   
 
   const dataProject = {
     name,
@@ -128,9 +127,7 @@ function updateProject(req, res) {
     nodeJs: checkboxes.includes("nodeJs") ? "/assets/img/nodejs.png" : "",
     nextJs: checkboxes.includes("nextJs") ? "/assets/img/nextjs.png" : "",
     reactJs: checkboxes.includes("reactJs") ? "/assets/img/react.png" : "",
-    typeScript: checkboxes.includes("typeScript")
-      ? "/assets/img/typescirpt.png"
-      : "",
+    typeScript: checkboxes.includes("typeScript") ? "/assets/img/typescirpt.png" : "",
   };
 
   const dataProject = {
