@@ -1,0 +1,35 @@
+[
+    {
+      "author": "-Ji Chang Wook-",
+      "content": "Apa apaan ini!",
+      "image": "assets/img/jcw2.jpeg",
+      "rating": 1
+    },
+    {
+      "author": "-Kim Mingyu-",
+      "content": "oke lah!",
+      "image": "assets/img/mingyu.jpeg",
+      "rating": 3
+    },
+    {
+      "author": "-Jake-",
+      "content": "The best pelayanannya!",
+      "image": "assets/img/jakeu.jpeg",
+      "rating": 4
+      
+    
+    },
+    {
+      "author": "-Heesung-",
+      "content": "keren banget jasanya!",
+      "image": "assets/img/hs.jpeg",
+      "rating": 5
+      
+    },
+    {
+      "author": "-Cha Eun Woo-",
+      "content": "kerenlah pokoknya!",
+      "image": "assets/img/cew1.jpeg",
+      "rating": 2
+    }
+  ]

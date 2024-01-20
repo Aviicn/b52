@@ -1,0 +1,76 @@
+:root {
+  --bg: #e3e7eb;
+  --nav: #f4f3f3;
+  --btn: #111727;
+}
+* {
+  font-family: sans-serif !important;
+}
+body {
+background-color: var(--bg) !important;
+}
+
+/* Navbar */
+.navbar {
+background-color: var(--nav) !important;
+}
+.navbar-brand img {
+height: 50px !important;
+}
+.nav-link:hover {
+font-weight: 800 !important;
+}
+.btn {
+background-color: var(--btn) !important;
+}
+.btn:hover {
+background-color: var(--btn) !important;
+border: #f4f3f3 !important;
+}
+.btn:active {
+background-color: var(--btn) !important;
+}
+
+/* Content */
+.btn-rate {
+  width: 50px !important; 
+  height: 35px !important;
+}
+.btn-rate img {
+  width: 17px !important;
+}
+.container-card {
+  width: 350px !important;
+  border: 1px solid black !important;
+}
+.card-testimonials {
+padding: 10px !important;
+}
+.card-testimonials img {
+  width: 100% !important;
+}
+.rate-card img {
+  width: 20px !important; 
+  height: 20px !important;
+}
+
+
+/* Responsive */
+/* Laptop */
+@media (max-width: 1366px) {
+  html {
+      font-size: 75% !important;
+  }
+}
+/* Tablet */
+@media (max-width: 768px) {
+html {
+  font-size: 62.5% !important;
+}
+}
+/* Mobile Phone */ 
+@media (max-width: 450px) {
+html {
+  font-size: 55% !important;
+}
+}

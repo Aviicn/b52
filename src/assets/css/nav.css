@@ -1,0 +1,60 @@
+:root {
+    --bg: #e2e6ea;
+    --nav: #f4f3f3;
+    --btn: #111727;
+  }
+  * { 
+    font-family: serif !important;
+  }
+  body {
+  background-color: var(--bg) !important;
+  }
+  
+  /* Navbar */
+  .navbar {
+  background-color: var(--nav) !important;
+  }
+  .navbar-brand img {
+  height: 50px !important;
+  }
+  .nav-link:hover {
+  font-weight: 800 !important;
+  }
+  .btn {
+  background-color: var(--btn) !important;
+  }
+  .btn:hover {
+  background-color: var(--btn) !important;
+  border: var(--nav) !important;
+  }
+  .btn:active {
+  background-color: var(--btn) !important;
+  }
+  
+  .hamburger-menu {
+    cursor: pointer !important;
+    display: none!important;
+  
+  }
+  .container-hamburger-menu  {
+    display: none!important;
+  }
+  .container-hamburger-menu a {
+    background-color: blue!important;
+    color: #fff!important;
+    text-decoration: none!important;
+    border: 2px #fff solid!important;
+    text-align: center!important;
+    padding: 10px!important;
+  }
+  .container-hamburger-menu a:hover {
+    background-color: #f4f3f3!important;
+    color: #111727!important;
+    border: 1px #111727 solid!important;
+  }
+  .container-hamburger-menu .click {
+    background-color: #f4f3f3!important;
+    color: #111727!important;
+    border: 1px #111727 solid!important;
+  }
+  

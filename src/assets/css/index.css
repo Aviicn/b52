@@ -1,0 +1,118 @@
+        :root {
+            --bg: #e3e7eb;
+            --nav: #f4f3f3;
+            --btn: #111727;
+        }
+        * {
+            font-family: Poppins !important;
+        }
+        body {
+          background-color: var(--bg) !important;
+        }
+
+        /* Navbar */
+        .navbar {
+          background-color: var(--nav) !important;
+        }
+        .navbar-brand img {
+          height: 50px !important;
+        }
+        .nav-link:hover {
+          font-weight: 800 !important;
+        }
+        .btn {
+          background-color: var(--btn) !important;
+        }
+        .btn:hover {
+          background-color: var(--btn) !important;
+          border: #f4f3f3 !important;
+        }
+        .btn:active {
+          background-color: var(--btn) !important;
+        }
+
+        /* Content */
+        .container {
+          width: 700px !important;
+          background-color: #fefefe;
+          box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2) !important;
+        }
+        .container-text {
+          width: 380px !important;
+        }
+        .container-text p {
+          font-size: 10px !important; 
+          text-align: justify !important;
+        }
+        .download-cv {
+          width: 20px !important; 
+          height: 20px !important;
+        }
+        .icon img {
+          width: 30px !important;
+          cursor: pointer !important;
+        }
+        .card-name {
+          background-color: #f8f5f5 !important;
+          width: 200px !important;
+          margin: auto !important;
+          box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3) !important;
+        }
+        .img-card {
+          width: 100% !important;
+        }
+        .card-title {
+          font-size: medium !important;
+        }
+        .card-text {
+          font-size: smaller !important;
+        }
+
+        /* Card */
+        .card {
+          width: 350px !important;
+          box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3) !important;
+        }
+        .card img {
+          width: 100% !important;
+        }
+        #icon img {
+          width: 20px !important;
+        }
+        .btn-card {
+          display: flex !important;
+          flex: 50% !important;
+          text-align: center !important;
+          justify-content: center !important;
+        }
+
+        /* Responsive */
+        /* Laptop */
+        @media (max-width: 1366px) {
+            html {
+                font-size: 75% !important;
+            }
+        }
+        /* Tablet */
+        @media (max-width: 768px) {
+          html {
+            font-size: 62.5% !important;
+          }
+          .container {
+            width: 85% !important;
+          }
+          .container-text {
+            width: 90% !important;
+            margin: auto !important;
+            padding: 0 !important;
+          }
+          .card {
+            margin-bottom: 20px !important;
+          }
+        }
+        /* Mobile Phone */ 
+        @media (max-width: 450px) {
+          html {
+            font-size: 55% !important;
+          }
+        }
