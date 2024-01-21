@@ -41,6 +41,11 @@
       .paragraph {
           text-align: justify !important;
       }
+      .regislog {
+        display: flex;
+        margin-right: 50px;
+        list-style-type: none;
+      }
 
 
       /* Responsive */

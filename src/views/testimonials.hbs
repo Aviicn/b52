@@ -12,41 +12,60 @@
   </head>
   <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <a class="navbar-brand ms-5" href="/"><img src="/assets/img/brandred.png"></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active ms-5 fs-5" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active ms-5 fs-5" href="/add-project">Add Project</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active ms-5 fs-5" href="/testimonials">Testimonials</a>
-              </li>
-            </ul>
-              <a href="/contact"><button class="btn btn-outline-success me-5 text-white btn fs-5" type="submit">Contact Me</button></a>
+     <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand ms-5" href="/"><img src="/assets/img/brandred.png"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active ms-5 fs-5" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active ms-5 fs-5" href="/add-project">Add Project</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active ms-5 fs-5" href="/testimonials">Testimonials</a>
+          </li>
+        </ul>
+        {{#if isLogin}}
+        <p class="text-primary navbar-nav nav-link regislog fs-5">Welcome, {{user.name}} !</p>
+        <form action="/logout" method="post" class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="submit" class="btn btn-outline-success me-5 text-white btn fs-5">Logout</button>
+        </form>
+        {{else}}
+        <ul class="navbar-nav">
+          <div class="regislog">
+            <li class="nav-item">
+              <a class="nav-link active ms-5 fs-5" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active ms-5 fs-5" href="/login">Login</a>
+            </li>
           </div>
-        </div>
-      </nav>
-    <!-- Navbar End -->
-
+        </ul>
+        {{/if}}
+        <a href="/contact"><button class="btn btn-outline-success me-5 text-white btn fs-5" type="submit">Contact
+            Me</button></a>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar End -->
+  
     <!-- Content Start -->
       <h1 class="text-center fs-3 mt-5 fw-bold">My Testimonials</h1>
       <h3 class="text-center fs-4 mt-4">Rating By Star</h3>
     <div class="m-5">
-        <div class="d-flex gap-4 flex-wrap justify-content-center mt-4">
-            <button type="button" class="btn-rate btn-outline-light fs-5" onclick="allTestimonials()">All</button>
-            <button type="button" class="btn-rate btn-outline-light fs-5" onclick="filterTestimonials(1)">1 <img src="/assets/icons/star (1).png"></button>
-            <button type="button" class="btn-rate btn-outline-light fs-5" onclick="filterTestimonials(2)">2 <img src="/assets/icons/star (1).png"></button>
-            <button type="button" class="btn-rate btn-outline-light fs-5" onclick="filterTestimonials(3)">3 <img src="/assets/icons/star (1).png"></button>
-            <button type="button" class="btn-rate btn-outline-light fs-5" onclick="filterTestimonials(4)">4 <img src="/assets/icons/star (1).png"></button>
-            <button type="button" class="btn-rate btn-outline-light fs-5" onclick="filterTestimonials(5)">5 <img src="/assets/icons/star (1).png"></button>
+        <div class="d-flex gap-4 flex-wrap justify-content-center mt-4 ">
+            <button type="button" class="btn-rate btn-outline-dark fs-5" onclick="allTestimonials()">All</button>
+            <button type="button" class="btn-rate btn-outline-dark fs-5" onclick="filterTestimonials(1)">1 <img src="/assets/icons/star (1).png"></button>
+            <button type="button" class="btn-rate btn-outline-dark fs-5" onclick="filterTestimonials(2)">2 <img src="/assets/icons/star (1).png"></button>
+            <button type="button" class="btn-rate btn-outline-dark fs-5" onclick="filterTestimonials(3)">3 <img src="/assets/icons/star (1).png"></button>
+            <button type="button" class="btn-rate btn-outline-dark fs-5" onclick="filterTestimonials(4)">4 <img src="/assets/icons/star (1).png"></button>
+            <button type="button" class="btn-rate btn-outline-dark fs-5" onclick="filterTestimonials(5)">5 <img src="/assets/icons/star (1).png"></button>
         </div>
         <div class="d-flex flex-wrap justify-content-center gap-4 mt-5" id="testimonials">
         </div>

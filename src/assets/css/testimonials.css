@@ -4,7 +4,7 @@
   --btn: #111727;
 }
 * {
-  font-family: sans-serif !important;
+  font-family: instrument-serif !important;
 }
 body {
 background-color: var(--bg) !important;
@@ -29,6 +29,11 @@ border: #f4f3f3 !important;
 }
 .btn:active {
 background-color: var(--btn) !important;
+}
+.regislog {
+  display: flex;
+  margin-right: 50px;
+  list-style-type: none;
 }
 
 /* Content */

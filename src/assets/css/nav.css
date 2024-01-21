@@ -30,6 +30,11 @@
   .btn:active {
   background-color: var(--btn) !important;
   }
+  .regislog {
+    display: flex;
+    margin-right: 50px;
+    list-style-type: none;
+  }
   
   .hamburger-menu {
     cursor: pointer !important;

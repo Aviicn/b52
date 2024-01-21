@@ -13,48 +13,67 @@
   <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <a class="navbar-brand ms-5" href="/"><img src="/assets/img/brandred.png"></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active ms-5 fs-5" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active ms-5 fs-5" href="/add-project">Add Project</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active ms-5 fs-5" href="/testimonials">Testimonials</a>
-              </li>
-            </ul>
-              <a href="/contact"><button class="btn btn-outline-success me-5 text-white btn fs-5" type="submit">Contact Me</button></a>
+    <div class="container-fluid">
+      <a class="navbar-brand ms-5" href="/"><img src="/assets/img/brandred.png"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active ms-5 fs-5" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active ms-5 fs-5" href="/add-project">Add Project</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active ms-5 fs-5" href="/testimonials">Testimonials</a>
+          </li>
+        </ul>
+        {{#if isLogin}}
+        <p class="text-primary navbar-nav nav-link regislog fs-5">Welcome, {{user.name}} !</p>
+        <form action="/logout" method="post" class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="submit" class="btn btn-outline-success me-5 text-white btn fs-5">Logout</button>
+        </form>
+        {{else}}
+        <ul class="navbar-nav">
+          <div class="regislog">
+            <li class="nav-item">
+              <a class="nav-link active ms-5 fs-5" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active ms-5 fs-5" href="/login">Login</a>
+            </li>
           </div>
-        </div>
-      </nav>
-    <!-- Navbar End -->
-
+        </ul>
+        {{/if}}
+        <a href="/contact"><button class="btn btn-outline-success me-5 text-white btn fs-5" type="submit">Contact
+            Me</button></a>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar End -->
+  
     <!-- Content Start -->
     <h1 class="text-center fs-3 mb-4 fw-bold mt-5">{{data.name}}</h1>
     <div class="container mt-5">
-        <div class="row text-center justify-content-center">
+        <div class="row justify-content-center">
           <div class="col">
             <img src="/assets/img/coding2.jpeg" class="img-content">
           </div>
           <div class="col">
-            <h2 class="fs-4 mb-3 mt-2">Duration</h2>
-                <div class="d-flex gap-3 justify-content-center">
+            <h2 class="fs-4 mb-3 mt-2 ">Duration</h2>
+                <div class="d-flex gap-3 justify-content-left">
                     <img src="/assets/icons/calendar-days-solid.svg" class="img-icon">
-                    <h6>{{start}} - {{end}}</h6>
+                    <h6>{{data.start_date}} - {{data.end_date}}</h6>
                 </div>
-                <div class="d-flex gap-3 mt-2 justify-content-center">
+                <div class="d-flex gap-3 mt-2 justify-content-left">
                     <img src="/assets/icons/clock-regular.svg" class="img-icon">
                     <h6>{{data.duration}} {{data.unit}}</h6>
                 </div>
             <h2 class="fs-4 mb-3 mt-5">Technologies</h2>
-            <div class="d-flex gap-4 justify-content-center">
+            <div class="d-flex gap-4 justify-content-left">
               {{#if data.icons.nodeJs}}
                 <div class="d-flex gap-2">
                     <img src="{{data.icons.nodeJs}}" class="img-icon">
@@ -69,7 +88,7 @@
               {{/if}}
             </div>
               {{#if data.icons.reactJs}}
-            <div class="d-flex gap-4 mt-3 justify-content-center">
+            <div class="d-flex gap-4 mt-3 justify-content-left">
                 <div class="d-flex gap-2">
                     <img src="{{data.icons.reactJs}}" class="img-icon">
                     <h6>React Js</h6>
@@ -88,7 +107,7 @@
     <div class="container mt-5">
         <div class="row">
           <div class="col">
-            <p class="fs-6 paragraph">{{data.desc}}</p>
+            <p class="fs-6 paragraph">{{data.description}}</p>
           </div>
         </div>
     </div>

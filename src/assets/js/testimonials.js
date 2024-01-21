@@ -21,11 +21,11 @@ const promise = new Promise((resolve, reject) => {
 })
 
 function html(item) {
-  return `<div class="container-card mb-4">
+  return `<div class="container-card mb-4 card text-bg-light mb-3">
   <div class="card-testimonials">
-    <img src="${item.image}">
+    <img  src="${item.image}" class="card-img-top" style="height: 500px;">
     <div class="card-body mt-3">
-      <h6 class="fs-6 fw-bolder">${item.content}</h6>
+      <h6 class="fs-4 fw-bolder">${item.content}</h6>
       <h1 class="d-flex justify-content-end fs-4 fw-bold mt-5"> ${item.author}</h1>
       <div class="d-flex justify-content-end mt-3 rate-card">
         <h2 class="fs-4 fw-bold">${item.rating}</h2>
