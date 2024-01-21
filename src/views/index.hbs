@@ -85,7 +85,7 @@
       <div class="card mb-5 rounded-4">
         <img src="/assets/img/hp4.jpeg" class="card-img-top rounded-2">
         <div class="card-body">
-          <a href="/detail/{{@index}}" class="text-decoration-none"><h3 class="card-title text-primary-emphasis fw-bold fs-4">{{this.name}}</h3></a>
+          <a href="/detail/{{this.id}}" class="text-decoration-none"><h3 class="card-title text-primary-emphasis fw-bold fs-4">{{this.name}}</h3></a>
           <h6 class="fs-6">durasi : {{this.duration}} {{this.unit}}</h6>
           <p class="card-text fs-5 mt-5">{{this.description}}</p>
           <div class="mb-5 mt-4">
@@ -98,9 +98,9 @@
           </div>
           <div class="d-flex gap-3">
           <form class="btn-card">
-          <a href="/update-project/{{@index}}" class="btn btn-primary btn-card">edit</a>
+          <a href="/update-project/{{this.id}}" class="btn btn-primary btn-card">edit</a>
           </form>
-          <form class="btn-card" method="post" action="/delete-card/{{@index}}">
+          <form class="btn-card" method="post" action="/delete-card/{{this.id}}">
           <button class="btn btn-primary btn-card">delete</button>
           </form>
           </div>
