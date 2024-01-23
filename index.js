@@ -8,11 +8,28 @@ const sequelize =  new Sequelize(config.development)
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const flash = require('express-flash')
+const multer = require('multer')
+
+// preparation
+const file = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "src/uploads")
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname.replace(/\s/g, ""))
+  }
+})
+
+const upload = multer({
+  storage: file
+})
 
 app.set("view engine", "hbs")
 app.set("views", path.join(__dirname, 'src/views'))
 
 app.use("/assets", express.static('src/assets'))
+app.use('/uploads', express.static('src/uploads'))
+
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -26,17 +43,17 @@ app.use(session({
 }))
 
 app.get('/', home)
-app.get('/contact', contact)
-app.post('/delete-card/:id', deleteCard)
+app.get('/contact', checkAuth, contact)
+app.post('/delete-card/:id', checkAuth, deleteCard)
 
-app.get('/add-project', addProjectView)
-app.post('/add-project', addProject)
+app.get('/add-project', checkAuth, addProjectView)
+app.post('/add-project', checkAuth, upload.single("image"), addProject)
 
-app.get('/update-project/:id', updateProjectView)
-app.post('/update-project', updateProject)
+app.get('/update-project/:id', checkAuth, updateProjectView)
+app.post('/update-project', checkAuth, upload.single("image"), updateProject)
 
-app.get('/detail/:id', detail)
-app.get('/testimonials', testimonials)
+app.get('/detail/:id', checkAuth, detail)
+app.get('/testimonials', checkAuth, testimonials)
 
 app.get('/register', registerView)
 app.post('/register', register)
@@ -48,7 +65,14 @@ const data = [];
 
 async function home(req, res) {
 
-  const query = 'SELECT * FROM blogs'
+  const isLogin = req.session.isLogin
+  const user = req.session.user
+  let userID=0
+  if(isLogin) { userID =  req.session.user.id}
+  const query = `SELECT blogs.id, blogs.name, blogs.start_date,
+  blogs.end_date, blogs.description, blogs.technologies,
+  blogs.image, users.name AS author, blogs."createdAt", blogs."updatedAt" FROM blogs LEFT JOIN users ON blogs.userid = users.id WHERE blogs.userid=`+userID
+
   const projects = await sequelize.query(query, { type: QueryTypes.SELECT })
 
   const projectsWithInfo = projects.map(project => {
@@ -70,9 +94,9 @@ async function home(req, res) {
       }
   })
 
-  const isLogin = req.session.isLogin
-  const user = req.session.user
-console.log("test", isLogin, user)
+  
+  
+console.log("test", projectsWithInfo)
   res.render('index', { data: projectsWithInfo, user: req.session.user, isLogin: isLogin, user: user })
 }
 
@@ -94,7 +118,9 @@ async function addProject(req, res) {
   const { name, start, end, description, id } = req.body
   const checkboxes = ['nodeJs', 'nextJs', 'reactJs', 'typeScript'].filter(checkbox => req.body[checkbox])
 
-  const image = 'react.png'
+ //const image = 'react.png'
+ const image = req.file.filename
+    const userid = req.session.user.id
   
   // Hitung selisih dalam hari
   const days = dayDifference(new Date(start), new Date(end))
@@ -110,7 +136,7 @@ async function addProject(req, res) {
       typeScript: checkboxes.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
   }
 
-  const query = `INSERT INTO blogs(name, start_date, end_date, description, technologies, image) VALUES('${name}', '${start}', '${end}', '${description}', ARRAY['${checkboxes.join("','")}'], '${image}')`
+  const query = `INSERT INTO blogs(name, start_date, end_date, description, technologies, image, userid) VALUES('${name}', '${start}', '${end}', '${description}', ARRAY['${checkboxes.join("','")}'], '${image}', '${userid}')`
   const obj = await sequelize.query(query, { type: QueryTypes.INSERT})
 
 
@@ -136,12 +162,12 @@ async function updateProject(req, res) {
   const { name, start, end, description, id } = req.body
   const checkboxes = ['nodeJs', 'nextJs', 'reactJs', 'typeScript'].filter(checkbox => req.body[checkbox])
 
-
   // Hitung selisih dalam hari
   const days = dayDifference(new Date(start), new Date(end))
 
   // Menentukan unit durasi berdasarkan selisih waktu
   const { duration, unit } = chooseDuration(days)
+  const image = req.file.filename
 
   // Ambil icon yang dipilih
   const icons = {
@@ -150,10 +176,10 @@ async function updateProject(req, res) {
       reactJs: checkboxes.includes('reactJs') ? "/assets/img/react.png"  : '',
       typeScript: checkboxes.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
   }
-  const query = `UPDATE blogs SET name='${name}', ${start ? `start_date='${start}',` : ''} ${end ? `end_date='${end}',` : ''} description='${description}', technologies=ARRAY['${checkboxes.join("','")}'] WHERE id=${id}`
-  const obj = await sequelize.query(query, { type: QueryTypes.UPDATE })
+  const updateQuery = `UPDATE blogs SET name='${name}', start_date='${start}', end_date='${end}', description='${description}', technologies=ARRAY['${checkboxes.join("','")}'], image='${image}'  WHERE id=${id}`;
+  const updateResult = await sequelize.query(updateQuery, { type: QueryTypes.UPDATE });
 
-  console.log('berhasil diupdate', obj)
+  console.log('berhasil diupdate', updateResult)
 
   res.redirect('/')
 }
@@ -270,9 +296,10 @@ async function login(req, res) {
       req.flash('success', 'Login success!')
       req.session.isLogin = true
       req.session.user = {
-          name: obj[0].name,
-          email: obj[0].email
-      }
+        id: obj[0].id,
+        name: obj[0].name,
+        email: obj[0].email
+    }
 
       res.redirect('/')
   })

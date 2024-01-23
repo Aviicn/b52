@@ -57,7 +57,7 @@
 
     <!-- Form Start -->
     <h1 class="text-center fs-3">ADD MY PROJECT</h1>
-    <form class="container form" method="post" action="/add-project">
+    <form class="container form" method="post" action="/add-project" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="inputProject" class="form-label mb-2">Project Name</label>
           <input type="text" class="form-control" id="inputProject" name="name" required>
@@ -101,7 +101,7 @@
         </div>
         <div class="mb-3">
             <label for="inputImage" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" id="inputImage">
+            <input type="file" class="form-control" id="inputImage" name="image">
         </div>
         <div class="d-flex justify-content-end mt-3">
             <button type="submit" class="btn text-white">Submit</button>

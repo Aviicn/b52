@@ -57,7 +57,7 @@
   
     <!-- Form Start -->
     <h1 class="text-center fs-3">UPDATE MY PROJECT</h1>
-    <form class="container form" method="post" action="/update-project">
+    <form class="container form" method="post" action="/update-project" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{{data.id}}">
         <div class="mb-3">
           <label for="inputProject" class="form-label mb-2">Project Name</label>
@@ -66,11 +66,11 @@
         <div class="mb-3 d-flex gap-3">
             <div class="container-startdate">
                 <label for="startDate" class="form-label">Start Date</label>
-                <input type="date" class="form-control" id="startDate" name="start" value="{{data.start}}" required>
+                <input type="date" class="form-control" id="startDate" name="start" value="{{data.start_date}}" required>
             </div>
             <div class="container-enddate">
                 <label for="endDate" class="form-label">End Date</label>
-                <input type="date" class="form-control" id="endDate" name="end" value="{{data.end}}" required>
+                <input type="date" class="form-control" id="endDate" name="end" value="{{data.end_date}}" required>
             </div>
         </div>
         <div class="mb-3">
@@ -103,7 +103,7 @@
         </div>
         <div class="mb-3">
             <label for="inputImage" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" id="inputImage">
+            <input type="file" class="form-control" id="inputImage" name="image">
         </div>
         <div class="d-flex justify-content-end mt-3">
             <button type="submit" class="btn text-white">Submit</button>

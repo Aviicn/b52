@@ -7,21 +7,19 @@ function submitData () {
 
     // keadaan jika salah satu input kosong
     if(!name) {
-        alert('harap diisi');
+        alert('Name harap diisi');
     } else if (!email) {
-        alert('harap diisi');
+        alert('Email harap diisi');
     } else if (!phone) {
-        alert('harap diisi');
+        alert('Phone number harap diisi');
     } else if (!subject) {
-        alert('harap diisi');
+        alert('Subject harap diisi');
     } else if (!message) {
-        alert('harap diisi');
+        alert('Massage harap diisi');
     } else {
-        console.log(`Name : ${name}\nEmail:${email}\nPhone:${phone}\nSubject:${subject}\n${message}`)
-
-        const emailReceiver = 'vcienna09@gmail.com'
-
-        let a = document.createElement('a')
+       
+        const emailReceiver = "vcienna09@gmail.com";
+        let a = document.createElement('a');
         a.href = `mailto:${emailReceiver}?subject=${subject}&body=${message}`;
         a.click();
     }
