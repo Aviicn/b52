@@ -2,12 +2,18 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const port = 5000
+const handlebars = require('handlebars');
+const handlebarsEqual = require('handlebars-helper-equal');
+const handlebarsFind = require('handlebars-helper-equal');
+
 const config = require('./src/config/config.json')
 const { Sequelize, QueryTypes} = require('sequelize')
 const sequelize =  new Sequelize(config.development)
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const flash = require('express-flash')
+const blogModel = require('./src/models').blog
+
 const multer = require('multer')
 
 // preparation
@@ -41,6 +47,10 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
+
+// Handlebars helper registration
+handlebars.registerHelper('eq', handlebarsEqual)
+handlebars.registerHelper('findStringInArray', handlebarsFind)
 
 app.get('/', home)
 app.get('/contact', checkAuth, contact)
@@ -115,7 +125,7 @@ function addProjectView(req, res) {
 }
 
 async function addProject(req, res) {
-  const { name, start, end, description, id } = req.body
+  const { name, start, end, description } = req.body
   const checkboxes = ['nodeJs', 'nextJs', 'reactJs', 'typeScript'].filter(checkbox => req.body[checkbox])
 
  //const image = 'react.png'
@@ -153,7 +163,15 @@ async function updateProjectView(req, res) {
   const isLogin = req.session.isLogin
     const user = req.session.user
 
-    res.render('update-project', { data: obj[0], isLogin: isLogin, user: user })
+    const icons = {
+      nodeJs: obj[0].technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
+      nextJs: obj[0].technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
+      reactJs: obj[0].technologies.includes('reactJs') ? "/assets/img/react.png"  : '',
+      typeScript: obj[0].technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
+  }
+    console.log("XXXX ",{...obj[0], icons })
+
+    res.render('update-project', { data: {...obj[0], icons }, isLogin: isLogin, user: user })
   
 }
 
@@ -189,6 +207,8 @@ async function deleteCard(req, res) {
 
   const query = `DELETE FROM blogs WHERE id=${id}`
   const obj = await sequelize.query(query, { type: QueryTypes.DELETE })
+
+  console.log(obj)
 
   res.redirect('/')
 }

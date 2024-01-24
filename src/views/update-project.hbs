@@ -1,18 +1,30 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Personal Website</title>
-    <link rel="stylesheet" href="/assets/css/add-project.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Inclusive+Sans&family=Inter:wght@200;400;600;900&family=Kanit:wght@300&family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personal Website</title>
+  <link rel="stylesheet" href="/assets/css/add-project.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Inclusive+Sans&family=Inter:wght@200;400;600;900&family=Kanit:wght@300&family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script>
+    // compile the template
+    var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
+    // execute the compiled template and print the output to the console
+    console.log(template({ doesWhat: "rocks!" }));
+  </script>
+</head>
+
+<body>
+  <!-- Navbar Start -->
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand ms-5" href="/"><img src="/assets/img/brandred.png"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
@@ -54,64 +66,87 @@
     </div>
   </nav>
   <!-- Navbar End -->
-  
-    <!-- Form Start -->
-    <h1 class="text-center fs-3">UPDATE MY PROJECT</h1>
-    <form class="container form" method="post" action="/update-project" enctype="multipart/form-data">
+
+  <!-- Form Start -->
+  <h1 class="text-center fs-3">UPDATE MY PROJECT</h1>
+  <form class="container form" method="post" action="/update-project" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{{data.id}}">
-        <div class="mb-3">
-          <label for="inputProject" class="form-label mb-2">Project Name</label>
-          <input type="text" class="form-control" id="inputProject" name="name" value="{{data.name}}" required>
+    <div class="mb-3">
+      <label for="inputProject" class="form-label mb-2">Project Name</label>
+      <input type="text" class="form-control" id="inputProject" name="name" value="{{data.name}}" required>
+    </div>
+    <div class="mb-3 d-flex gap-3">
+      <div class="container-startdate">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="startDate" name="start" value="{{data.start_date}}" required>
+      </div>
+      <div class="container-enddate">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control" id="endDate" name="end" value="{{data.end_date}}" required>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="desc" class="mb-2">Description</label>
+      <textarea class="form-control textarea" id="desc" name="description" required>{{data.description}}</textarea>
+    </div>
+    <label for="checkbox">Technologies</label>
+    <div class="mb-3 mt-3">
+      <div class="d-flex gap-3">
+        <div class="d-flex gap-1">
+           {{#if data.icons.nodeJs}}
+          <input type="checkbox" class="form-check-input" id="nodeJs" name="nodeJs" data-icon="nodeJs" checked="true">
+          <label for="nodeJs" class="form-label">Node Js</label>
+          {{else }}
+          <input type="checkbox" class="form-check-input" id="nodeJs" name="nodeJs" data-icon="nodeJs">
+          <label for="nodeJs" class="form-label">Node Js</label>
+          {{/if}}
         </div>
-        <div class="mb-3 d-flex gap-3">
-            <div class="container-startdate">
-                <label for="startDate" class="form-label">Start Date</label>
-                <input type="date" class="form-control" id="startDate" name="start" value="{{data.start_date}}" required>
-            </div>
-            <div class="container-enddate">
-                <label for="endDate" class="form-label">End Date</label>
-                <input type="date" class="form-control" id="endDate" name="end" value="{{data.end_date}}" required>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="desc" class="mb-2">Description</label>
-            <textarea class="form-control textarea" id="desc" name="description" required>{{data.description}}</textarea>
-        </div>
-        <label for="checkbox">Technologies</label>
-        <div class="mb-3 mt-3">
-            <div class="d-flex gap-3">
-            <div class="d-flex gap-1">
-                <input type="checkbox" class="form-check-input" id="nodeJs" name="nodeJs" data-icon="nodeJs">
-                <label for="nodeJs" class="form-label" >Node Js</label>
-            </div>
 
-            <div class="d-flex gap-1">
-                <input type="checkbox" class="form-check-input" id="nextJs" name="nextJs" data-icon="nextJs">
-                <label for="nextJs" class="form-label">Next Js</label>
-            </div>
-            </div>
-            <div class="d-flex gap-3">
-            <div class="d-flex gap-1">
-                <input type="checkbox" class="form-check-input" id="reactJs" name="reactJs" data-icon="reactJs">
-                <label for="reactJs" class="form-label">React Js</label>
-            </div>
-            <div class="d-flex gap-1">
-                <input type="checkbox" class="form-check-input" id="typeScript" name="typeScript" data-icon="typeScript">
-                <label for="typescript" class="form-label">TypeScript</label>
-            </div>
-            </div>
+        <div class="d-flex gap-1">
+          {{#if data.icons.nextJs}}
+          <input type="checkbox" class="form-check-input" id="nextJs" name="nextJs" data-icon="nextJs" checked="true">
+          <label for="nextJs" class="form-label">Next Js</label>
+          {{else }}
+          <input type="checkbox" class="form-check-input" id="nextJs" name="nextJs" data-icon="nextJs">
+          <label for="nextJs" class="form-label">Next Js</label>
+          {{/if}}
         </div>
-        <div class="mb-3">
-            <label for="inputImage" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" id="inputImage" name="image">
+      </div>
+      <div class="d-flex gap-3">
+        <div class="d-flex gap-1">
+          {{#if data.icons.reactJs}}
+          <input type="checkbox" class="form-check-input" id="reactJs" name="reactJs" data-icon="reactJs"  checked="true">
+          <label for="reactJs" class="form-label">React Js</label>
+          {{else}}
+          <input type="checkbox" class="form-check-input" id="reactJs" name="reactJs" data-icon="reactJs">
+          <label for="reactJs" class="form-label">React Js</label>
+          {{/if}}
         </div>
-        <div class="d-flex justify-content-end mt-3">
-            <button type="submit" class="btn text-white">Submit</button>
+        <div class="d-flex gap-1">
+          {{#if data.icons.typeScript}}
+          <input type="checkbox" class="form-check-input" id="typeScript" name="typeScript" data-icon="typeScript" checked="true">
+          <label for="typescript" class="form-label">TypeScript</label>
+          {{else}}
+          <input type="checkbox" class="form-check-input" id="typeScript" name="typeScript" data-icon="typeScript">
+          <label for="typescript" class="form-label">TypeScript</label>
+          {{/if}}
         </div>
-      </form>
-    <!-- Form End -->
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="inputImage" class="form-label">Upload Image</label>
+      <input type="file" class="form-control" id="inputImage" name="image">
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+      <button type="submit" class="btn text-white">Submit</button>
+    </div>
+  </form>
+  <!-- Form End -->
 
-    <!-- Script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
