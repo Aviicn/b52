@@ -2,17 +2,13 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const port = 5000
-const handlebars = require('handlebars');
-const handlebarsEqual = require('handlebars-helper-equal');
-const handlebarsFind = require('handlebars-helper-equal');
-
 const config = require('./src/config/config.json')
-const { Sequelize, QueryTypes} = require('sequelize')
-const sequelize =  new Sequelize(config.development)
+const { Sequelize, QueryTypes } = require('sequelize')
+const sequelize = new Sequelize(config.development)
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const flash = require('express-flash')
-const blogModel = require('./src/models').blog
+
 
 const multer = require('multer')
 
@@ -39,18 +35,16 @@ app.use('/uploads', express.static('src/uploads'))
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
-    secret: 'verysecret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        secure: false,
-        maxAge: 1000 * 60 * 60 * 24
-    }
+  secret: 'verysecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }))
 
-// Handlebars helper registration
-handlebars.registerHelper('eq', handlebarsEqual)
-handlebars.registerHelper('findStringInArray', handlebarsFind)
+
 
 app.get('/', home)
 app.get('/contact', checkAuth, contact)
@@ -77,77 +71,63 @@ async function home(req, res) {
 
   const isLogin = req.session.isLogin
   const user = req.session.user
-  let userID=0
-  if(isLogin) { userID =  req.session.user.id}
+  let userID = 0
+  if (isLogin) { userID = req.session.user.id }
   const query = `SELECT blogs.id, blogs.name, blogs.start_date,
   blogs.end_date, blogs.description, blogs.technologies,
-  blogs.image, users.name AS author, blogs."createdAt", blogs."updatedAt" FROM blogs LEFT JOIN users ON blogs.userid = users.id WHERE blogs.userid=`+userID
+  blogs.image, users.name AS author, blogs."createdAt", blogs."updatedAt" FROM blogs LEFT JOIN users ON blogs.userid = users.id WHERE blogs.userid=`+ userID
 
   const projects = await sequelize.query(query, { type: QueryTypes.SELECT })
 
   const projectsWithInfo = projects.map(project => {
-      const days = dayDifference(new Date(project.start_date), new Date(project.end_date));
-      const { duration, unit } = chooseDuration(days);
+    const days = dayDifference(new Date(project.start_date), new Date(project.end_date));
+    const { duration, unit } = chooseDuration(days);
 
-      const icons = {
-          nodeJs: project.technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
-          nextJs: project.technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
-          reactJs: project.technologies.includes('reactJs') ? "/assets/img/react.png"  : '',
-          typeScript: project.technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
-      };
-      return {
-          ...project,
-          technologies: project.technologies.join(', '),
-          duration,
-          unit,
-          icons
-      }
+    const icons = {
+      nodeJs: project.technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
+      nextJs: project.technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
+      reactJs: project.technologies.includes('reactJs') ? "/assets/img/react.png" : '',
+      typeScript: project.technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
+    };
+    return {
+      ...project,
+      technologies: project.technologies.join(', '),
+      duration,
+      unit,
+      icons
+    }
   })
 
-  
-  
-console.log("test", projectsWithInfo)
-  res.render('index', { data: projectsWithInfo, user: req.session.user, isLogin: isLogin, user: user })
+
+
+  console.log("test", projectsWithInfo)
+  res.render('index', { data: projectsWithInfo, user: req.session.user, isLogin: isLogin,loggedInUser : user })
 }
 
 function contact(req, res) {
   const isLogin = req.session.isLogin
-    const user = req.session.user
-    
-    res.render('contact', {isLogin: isLogin, user: user})
+  const user = req.session.user
+
+  res.render('contact', { isLogin: isLogin, user: user })
 }
 
 function addProjectView(req, res) {
   const isLogin = req.session.isLogin
   const user = req.session.user
 
-  res.render('add-project', {isLogin: isLogin, user: user})
+  res.render('add-project', { isLogin: isLogin, user: user })
 }
 
 async function addProject(req, res) {
   const { name, start, end, description } = req.body
   const checkboxes = ['nodeJs', 'nextJs', 'reactJs', 'typeScript'].filter(checkbox => req.body[checkbox])
 
- //const image = 'react.png'
- const image = req.file.filename
-    const userid = req.session.user.id
-  
-  // Hitung selisih dalam hari
-  const days = dayDifference(new Date(start), new Date(end))
-
-  // Menentukan unit durasi berdasarkan selisih waktu
-  const { duration, unit } = chooseDuration(days)
-
-  // Ambil icon yang dipilih
-  const icons = {
-      nodeJs: checkboxes.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
-      nextJs: checkboxes.includes('nextJs') ? "/assets/img/nextjs.png" : '',
-      reactJs: checkboxes.includes('reactJs') ? "/assets/img/react.png"  : '',
-      typeScript: checkboxes.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
-  }
+  //const image = 'react.png'
+  const image = req.file.filename
+  const userid = req.session.user.id
 
   const query = `INSERT INTO blogs(name, start_date, end_date, description, technologies, image, userid) VALUES('${name}', '${start}', '${end}', '${description}', ARRAY['${checkboxes.join("','")}'], '${image}', '${userid}')`
-  const obj = await sequelize.query(query, { type: QueryTypes.INSERT})
+  const obj = await sequelize.query(query, { type: QueryTypes.INSERT })
 
 
   console.log('data berhasil diinsert', obj)
@@ -155,24 +135,24 @@ async function addProject(req, res) {
 }
 
 async function updateProjectView(req, res) {
-  const {id} = req.params
+  const { id } = req.params
 
   const query = `SELECT * FROM blogs WHERE id=${id}`
   const obj = await sequelize.query(query, { type: QueryTypes.SELECT })
 
   const isLogin = req.session.isLogin
-    const user = req.session.user
+  const user = req.session.user
 
-    const icons = {
-      nodeJs: obj[0].technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
-      nextJs: obj[0].technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
-      reactJs: obj[0].technologies.includes('reactJs') ? "/assets/img/react.png"  : '',
-      typeScript: obj[0].technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
+  const icons = {
+    nodeJs: obj[0].technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
+    nextJs: obj[0].technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
+    reactJs: obj[0].technologies.includes('reactJs') ? "/assets/img/react.png" : '',
+    typeScript: obj[0].technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
   }
-    console.log("XXXX ",{...obj[0], icons })
+  console.log("XXXX ", { ...obj[0], icons })
 
-    res.render('update-project', { data: {...obj[0], icons }, isLogin: isLogin, user: user })
-  
+  res.render('update-project', { data: { ...obj[0], icons }, isLogin: isLogin, user: user })
+
 }
 
 
@@ -180,20 +160,8 @@ async function updateProject(req, res) {
   const { name, start, end, description, id } = req.body
   const checkboxes = ['nodeJs', 'nextJs', 'reactJs', 'typeScript'].filter(checkbox => req.body[checkbox])
 
-  // Hitung selisih dalam hari
-  const days = dayDifference(new Date(start), new Date(end))
-
-  // Menentukan unit durasi berdasarkan selisih waktu
-  const { duration, unit } = chooseDuration(days)
   const image = req.file.filename
 
-  // Ambil icon yang dipilih
-  const icons = {
-      nodeJs: checkboxes.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
-      nextJs: checkboxes.includes('nextJs') ? "/assets/img/nextjs.png" : '',
-      reactJs: checkboxes.includes('reactJs') ? "/assets/img/react.png"  : '',
-      typeScript: checkboxes.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
-  }
   const updateQuery = `UPDATE blogs SET name='${name}', start_date='${start}', end_date='${end}', description='${description}', technologies=ARRAY['${checkboxes.join("','")}'], image='${image}'  WHERE id=${id}`;
   const updateResult = await sequelize.query(updateQuery, { type: QueryTypes.UPDATE });
 
@@ -203,7 +171,7 @@ async function updateProject(req, res) {
 }
 
 async function deleteCard(req, res) {
-  const {id} = req.params
+  const { id } = req.params
 
   const query = `DELETE FROM blogs WHERE id=${id}`
   const obj = await sequelize.query(query, { type: QueryTypes.DELETE })
@@ -219,7 +187,7 @@ async function detail(req, res) {
   const query = `SELECT * FROM blogs WHERE id=${id}`
   const obj = await sequelize.query(query, { type: QueryTypes.SELECT })
 
-  console.log("log ",obj)
+  console.log("log ", obj)
 
   const formattedStartDate = new Date(obj[0].start_date).toISOString().split('T')[0];
   const formattedEndDate = new Date(obj[0].end_date).toISOString().split('T')[0];
@@ -228,40 +196,40 @@ async function detail(req, res) {
   const { duration, unit } = chooseDuration(days)
 
   const icons = {
-      nodeJs: obj[0].technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
-      nextJs: obj[0].technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
-      reactJs: obj[0].technologies.includes('reactJs') ? "/assets/img/react.png"  : '',
-      typeScript: obj[0].technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
+    nodeJs: obj[0].technologies.includes('nodeJs') ? "/assets/img/nodejs.png" : '',
+    nextJs: obj[0].technologies.includes('nextJs') ? "/assets/img/nextjs.png" : '',
+    reactJs: obj[0].technologies.includes('reactJs') ? "/assets/img/react.png" : '',
+    typeScript: obj[0].technologies.includes('typeScript') ? "/assets/img/typescirpt.png" : ''
   }
 
   console.log('detail project:', obj[0]);
   const isLogin = req.session.isLogin;
-        const user = req.session.user;
+  const user = req.session.user;
 
-        res.render('detail', {
-            data: {
-                ...obj[0],
-                start_date: formattedStartDate,
-                end_date: formattedEndDate,
-                duration,
-                unit,
-                icons
-            },
-            isLogin: isLogin,
-            user: user
-        });
-        
+  res.render('detail', {
+    data: {
+      ...obj[0],
+      start_date: formattedStartDate,
+      end_date: formattedEndDate,
+      duration,
+      unit,
+      icons
+    },
+    isLogin: isLogin,
+    user: user
+  });
+
 }
 
 function testimonials(req, res) {
   const isLogin = req.session.isLogin
-    const user = req.session.user
+  const user = req.session.user
 
-    res.render('testimonials', {isLogin: isLogin, user: user})
+  res.render('testimonials', { isLogin: isLogin, user: user })
 }
 
 async function register(req, res) {
-  const {name, email, password} = req.body
+  const { name, email, password } = req.body
 
   console.log('Name', name)
   console.log('Email', email)
@@ -270,17 +238,17 @@ async function register(req, res) {
   const salt = 10
 
   bcrypt.hash(password, salt, async (err, hash) => {
-      if (err) {
-          console.error("Password failed to be encrypted! ")
-          req.flash('danger', 'Register failed : password failed to be encrypted!')
-          return res.redirect('/register')
-      }
-      console.log('Hash result :', hash)
-      const query = `INSERT INTO users(name, email, password) VALUES ('${name}', '${email}', '${hash}')`
-      await sequelize.query(query, { type: QueryTypes.INSERT })
-      req.flash('success', 'Register success!')
+    if (err) {
+      console.error("Password failed to be encrypted! ")
+      req.flash('danger', 'Register failed : password failed to be encrypted!')
+      return res.redirect('/register')
+    }
+    console.log('Hash result :', hash)
+    const query = `INSERT INTO users(name, email, password) VALUES ('${name}', '${email}', '${hash}')`
+    await sequelize.query(query, { type: QueryTypes.INSERT })
+    req.flash('success', 'Register success!')
 
-      res.render('index')
+    res.render('index')
   })
 }
 
@@ -294,34 +262,34 @@ async function login(req, res) {
   const obj = await sequelize.query(query, { type: QueryTypes.SELECT })
 
   if (!obj.length) {
-      console.error('user not registered!')
-      req.flash('danger', 'Login failed : email is wrong!')
-      return res.redirect('login')
+    console.error('user not registered!')
+    req.flash('danger', 'Login failed : email is wrong!')
+    return res.redirect('login')
   }
 
   bcrypt.compare(password, obj[0].password, (err, result) => {
-      if (err) {
-          req.flash('danger', 'Login failed : Internal Server Error!')
-          console.error("Login : Internal Server Error!")
-          return res.redirect('/login')
-      }
-
-      if (!result) {
-          console.error('Password is wrong!')
-          req.flash('danger', 'Login failed : password is wrong!')
-          return res.redirect('/login')
-      }
-
-      console.log('Login success!')
-      req.flash('success', 'Login success!')
-      req.session.isLogin = true
-      req.session.user = {
-        id: obj[0].id,
-        name: obj[0].name,
-        email: obj[0].email
+    if (err) {
+      req.flash('danger', 'Login failed : Internal Server Error!')
+      console.error("Login : Internal Server Error!")
+      return res.redirect('/login')
     }
 
-      res.redirect('/')
+    if (!result) {
+      console.error('Password is wrong!')
+      req.flash('danger', 'Login failed : password is wrong!')
+      return res.redirect('/login')
+    }
+
+    console.log('Login success!')
+    req.flash('success', 'Login success!')
+    req.session.isLogin = true
+    req.session.user = {
+      id: obj[0].id,
+      name: obj[0].name,
+      email: obj[0].email
+    }
+
+    res.redirect('/')
   })
 }
 
@@ -332,25 +300,25 @@ function loginView(req, res) {
 // Middleware untuk memeriksa apakah pengguna sudah login atau belum
 function checkAuth(req, res, next) {
   if (req.session.isLogin) {
-      // Jika pengguna sudah login, lanjutkan ke route berikutnya
-      next()
+    // Jika pengguna sudah login, lanjutkan ke route berikutnya
+    next()
   } else {
-      // Jika pengguna belum login, redirect ke halaman login
-      req.flash('danger', 'You must be logged in to access this page.')
-      res.redirect('/login')
+    // Jika pengguna belum login, redirect ke halaman login
+    req.flash('danger', 'You must be logged in to access this page.')
+    res.redirect('/login')
   }
 }
 
 // Ketika tombol logout diklik
 app.post('/logout', (req, res) => {
   req.session.destroy(err => {
-      if (err) {
-          console.error('Error destroying session:', err)
-      }
-      res.redirect('/')
+    if (err) {
+      console.error('Error destroying session:', err)
+    }
+    res.redirect('/')
   })
 })
- 
+
 function dayDifference(start, end) {
   const timeDiff = end.getTime() - start.getTime();
   return Math.floor(timeDiff / (1000 * 60 * 60 * 24));
