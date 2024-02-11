@@ -8,9 +8,8 @@ const sequelize = new Sequelize(config.development)
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const flash = require('express-flash')
-
 const multer = require('multer')
-
+//test github comit
 // preparation
 const file = multer.diskStorage({
   destination: (req, file, cb) => {
